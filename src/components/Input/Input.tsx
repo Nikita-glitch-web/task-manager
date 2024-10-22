@@ -12,7 +12,7 @@ export const Input: FC<InputProps> = ({
   onChange,
   name,
   autoFocus,
-  id = `${name}-${Date.now()}`, // Генеруємо id, якщо його не передали
+  id = `${name}-${Math.ceil(Math.random() * 999)}`, // Генеруємо id, якщо його не передали
 }) => {
   return (
     <div className={styles.input_wrapper}>

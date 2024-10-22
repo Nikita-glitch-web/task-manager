@@ -1,13 +1,9 @@
 import React, { useState } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface Task {
-  id: number;
-  text: string;
-  completed: boolean;
-}
 
-const TaskForm: React.FC = () => {
+
+export const TaskForm: React.FC = () => {
   const [newTask, setNewTask] = useState<string>("");
 
   const addTask = (e: React.FormEvent) => {
@@ -34,4 +30,4 @@ const TaskForm: React.FC = () => {
   );
 };
 
-export default TaskForm;
+
