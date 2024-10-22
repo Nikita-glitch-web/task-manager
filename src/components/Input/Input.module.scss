@@ -1,0 +1,75 @@
+.input_wrapper {
+  position: relative;
+  padding-bottom: 26px;
+}
+
+.input_wrapper:nth-last-child(2) {
+  padding-bottom: 0px;
+}
+
+.form_group {
+  position: relative;
+  padding: 15px 0 0;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.form_field {
+  font-family: inherit;
+  width: 100%;
+  border: 1px solid var(--input-border-color);
+  border-radius: 4px;
+  outline: 0;
+  font-size: var(--font-size-regular);
+  color: var(--text-color);
+  padding: 17px var(--font-size-regular);
+  background: transparent;
+  transition: border-color 0.2s;
+}
+
+.form_field:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+.form_field.notValid {
+  border: 2px solid var(--error-color);
+  padding: var(--font-size-regular);
+}
+
+.form_field::placeholder {
+  color: transparent;
+}
+
+.form_field:placeholder-shown ~ .form_label {
+  font-size: var(--font-size-regular);
+  cursor: text;
+  top: 32px;
+}
+
+.form_label,
+.form_field:focus ~ .form_label {
+  position: absolute;
+  top: 7px;
+  left: 10px;
+  display: block;
+  transition: 0.2s;
+  font-size: 12px;
+  padding: 0 5px;
+  color: var(--input-placeholder-color);
+  background: var(--background-color);
+}
+
+.form_field.notValid:focus ~ .form_label {
+  color: var(--error-color);
+}
+
+.form_field:focus {
+  padding-bottom: 17px;
+}
+
+.error_message {
+  font-size: var(--font-size-small);
+  color: var(--error-color);
+  padding: 7px 18px;
+  position: relative;
+}

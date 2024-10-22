@@ -1,0 +1,36 @@
+* {
+  box-sizing: border-box;
+}
+
+.content {
+  font-family: "Nunito", sans-serif;
+}
+
+html {
+  font-family: "Nunito", sans-serif;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  padding: 0px;
+  margin: 0px;
+}
+
+button,
+input,
+textarea,
+a {
+  font-family: "Nunito", sans-serif;
+  font-size: 1rem;
+}
+
+.page_wrapper {
+  max-width: 383px;
+  margin: 0 auto;
+}
+
+.page_title {
+  text-align: center;
+  font-weight: 300;
+}
