@@ -1,21 +1,25 @@
-import React, { useState } from 'react';
-import RadioButton from '../RadioButton/RadioButton';
-import Input from '../Input/Input';
-import { ITask } from '../../types/task';
+import React, { useState, useEffect } from "react";
+import RadioButton from "../RadioButton/RadioButton";
+import Input from "../Input/Input";
+import { ITask } from "../../types/task";
 
 interface ITaskItemProps {
   task: ITask;
   onChange: (task: ITask) => void;
 }
+
 export const TaskItem: React.FC<ITaskItemProps> = ({
   task,
   onChange,
 }: ITaskItemProps) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [labelText, setLabelText] = useState<string>(task.text);
-  const [selected, setSelected] = useState<boolean>(false);
+  const [selected, setSelected] = useState<boolean>(task.completed);
 
-  // test changes
+  useEffect(() => {
+    setSelected(task.completed);
+  }, [task.completed]);
+
   const handleDoubleClick = () => {
     setIsEditing(true);
   };
@@ -26,42 +30,43 @@ export const TaskItem: React.FC<ITaskItemProps> = ({
 
   const handleBlur = () => {
     setIsEditing(false);
-    const updateTask = task.updateText(labelText);
-    onChange(updateTask);
+    const updatedTask = task.updateText(labelText);
+    onChange(updatedTask);
   };
 
-  const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.checked);
-    setSelected(e.target.checked);
+  const handleRadioChange = () => {
+    task.toggleCompleted();
+    setSelected(task.completed);
+    onChange(task);
   };
 
   const renderContent = () => {
     if (isEditing) {
       return (
         <Input
-          type='text'
+          type="text"
           value={labelText}
           onChange={handleChange}
           onBlur={handleBlur}
           autoFocus
-          name='editableLabel'
-          id={''}
+          name="editableLabel"
+          id={""}
           errorMessage={undefined}
-          placeholder={''}
+          placeholder={""}
         />
       );
     }
     return (
       <>
         <RadioButton
-          name='radioTask'
-          value={task.completed ? '1' : ''}
+          name="radioTask"
+          value={task.completed ? "1" : ""}
           checked={selected}
           onChange={handleRadioChange}
-          label={''}
+          label={""}
         />
         <span onDoubleClick={handleDoubleClick}>
-          {task.text || 'Double-click to edit'}
+          {task.text || "Double-click to edit"}
         </span>
       </>
     );

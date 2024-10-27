@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { ITask } from "../../types/task";
 import { TaskItem } from "../TaskItem/TaskItem";
 import { useTaskStore } from "../../store/useTaskStore";
