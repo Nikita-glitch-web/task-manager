@@ -1,23 +1,18 @@
-// need to add component
-import { useState } from 'react';
-import { ITask } from '../../types/task';
-import { TaskItem } from '../TaskItem/TaskItem';
+import { useEffect } from "react";
+import { ITask } from "../../types/task";
+import { TaskItem } from "../TaskItem/TaskItem";
+import { useTaskStore } from "../../store/useTaskStore";
 
 export const TaskList = () => {
-  const [tasks, setTasks] = useState([
-    { id: '1234', text: 'task 1', completed: true },
-    { id: '1235', text: 'task 2', completed: false },
-  ]);
+  const { tasks, addTask, updateTask } = useTaskStore();
 
-  //  { id: '1234', text: 'task 1 asdasdasd', completed: true },
+  useEffect(() => {
+    addTask({ id: "1234", text: "task 1", completed: true });
+    addTask({ id: "1235", text: "task 2", completed: false });
+  }, [addTask]);
+
   const handleUpdate = (task: ITask) => {
-    const index = tasks.findIndex((item) => {
-      return item.id === task.id;
-    });
-    console.log(index, task);
-    tasks.splice(index, 1, task);
-    console.log(tasks);
-    setTasks([...tasks]);
+    updateTask(task);
   };
 
   return (
