@@ -3,12 +3,14 @@ import RadioButton from '../RadioButton/RadioButton';
 import Input from '../Input/Input';
 import { ITask } from '../../types/task';
 
-
 interface ITaskItemProps {
   task: ITask;
   onChange: (task: ITask) => void;
 }
-export const TaskItem: React.FC<ITaskItemProps> = ({task, onChange}: ITaskItemProps) => {
+export const TaskItem: React.FC<ITaskItemProps> = ({
+  task,
+  onChange,
+}: ITaskItemProps) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [labelText, setLabelText] = useState<string>(task.text);
   const [selected, setSelected] = useState<boolean>(false);
@@ -24,11 +26,12 @@ export const TaskItem: React.FC<ITaskItemProps> = ({task, onChange}: ITaskItemPr
 
   const handleBlur = () => {
     setIsEditing(false);
-    const updatedTask = {...task, text: labelText};
-    onChange(updatedTask)
+    const updateTask = task.updateText(labelText);
+    onChange(updateTask);
   };
 
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.checked);
     setSelected(e.target.checked);
   };
 
