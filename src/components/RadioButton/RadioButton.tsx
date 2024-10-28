@@ -19,7 +19,7 @@ const RadioButton: React.FC<RadioButtonProps> = ({
   return (
     <label className={styles.label}>
       <input
-        type="radio"
+        type="checkbox"
         name={name}
         value={value}
         checked={checked}
