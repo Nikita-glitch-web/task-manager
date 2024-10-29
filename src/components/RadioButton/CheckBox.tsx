@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./RadioButton.module.scss";
 
-interface RadioButtonProps {
+interface CheckBoxProps {
   label: string;
   name: string;
   value: string;
@@ -9,7 +9,7 @@ interface RadioButtonProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const RadioButton: React.FC<RadioButtonProps> = ({
+export const CheckBox: React.FC<CheckBoxProps> = ({
   name,
   value,
   checked,
@@ -30,5 +30,3 @@ const RadioButton: React.FC<RadioButtonProps> = ({
     </label>
   );
 };
-
-export default RadioButton;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Input from "../Input/Input";
 import { ITask } from "../../types/task";
-import Checkbox from "../RadioButton/RadioButton";
+import { CheckBox } from "../RadioButton/CheckBox";
 
 interface ITaskItemProps {
   task: ITask;
@@ -58,7 +58,7 @@ export const TaskItem: React.FC<ITaskItemProps> = ({
     }
     return (
       <>
-        <Checkbox
+        <CheckBox
           name="radioTask"
           value={task.completed ? "1" : ""}
           checked={selected}
