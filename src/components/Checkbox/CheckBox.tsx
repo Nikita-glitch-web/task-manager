@@ -7,6 +7,7 @@ interface CheckBoxProps {
   value: string;
   checked: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  type?: "checkbox" | "radio"; // Добавляем type с двумя возможными значениями
 }
 
 export const CheckBox: React.FC<CheckBoxProps> = ({
@@ -15,11 +16,12 @@ export const CheckBox: React.FC<CheckBoxProps> = ({
   checked,
   onChange,
   label,
+  type = "checkbox", // значение по умолчанию
 }) => {
   return (
     <label className={styles.label}>
       <input
-        type="checkbox"
+        type={type} // Устанавливаем тип, переданный в пропсах
         name={name}
         value={value}
         checked={checked}

@@ -1,9 +1,10 @@
 import { ITask } from "../../types/task";
 import { TaskItem } from "../TaskItem/TaskItem";
-import { useTaskStore } from "../../store/useTaskStore";
+import { useTaskStore, useFilteredTasks } from "../../store/useTaskStore";
 
 export const TaskList = () => {
-  const { filteredTasks, updateTask } = useTaskStore();
+  const updateTask = useTaskStore((state) => state.updateTask);
+  const filteredTasks = useFilteredTasks();
 
   const handleUpdate = (task: ITask) => {
     updateTask(task);
@@ -11,7 +12,7 @@ export const TaskList = () => {
 
   return (
     <>
-      {filteredTasks().map((task: ITask) => (
+      {filteredTasks.map((task: ITask) => (
         <TaskItem task={task} key={task.id} onChange={handleUpdate} />
       ))}
     </>

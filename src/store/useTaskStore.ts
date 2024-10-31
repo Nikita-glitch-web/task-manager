@@ -7,7 +7,6 @@ const DEFAULT_TASKS = [new Task("Hello world"), new Task("Hello world2")];
 interface TaskStore {
   tasks: ITask[];
   filter: "all" | "active" | "completed";
-  filteredTasks: () => ITask[];
   addTask: (taskText: string) => void;
   removeTask: (taskId: string) => void;
   updateTask: (updatedTask: ITask) => void;
@@ -15,7 +14,14 @@ interface TaskStore {
   setFilter: (filter: "all" | "active" | "completed") => void;
 }
 
-export const useTaskStore = create<TaskStore>((set, get) => ({
+// Функция для фильтрации задач
+const filterTasks = (tasks: ITask[], filter: string): ITask[] => {
+  if (filter === "completed") return tasks.filter((task) => task.completed);
+  if (filter === "active") return tasks.filter((task) => !task.completed);
+  return tasks;
+};
+
+export const useTaskStore = create<TaskStore>((set) => ({
   tasks: [...DEFAULT_TASKS],
   filter: "all",
 
@@ -45,12 +51,8 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
   clearTasks: () => set({ tasks: [] }),
 
   setFilter: (filter) => set({ filter }),
-
-  // Метод для отриманя відфілтрованних завдань
-  filteredTasks: () => {
-    const { tasks, filter } = get();
-    if (filter === "completed") return tasks.filter((task) => task.completed);
-    if (filter === "active") return tasks.filter((task) => !task.completed);
-    return tasks;
-  },
 }));
+
+// Создаем селектор для получения отфильтрованных задач
+export const useFilteredTasks = () =>
+  useTaskStore((state) => filterTasks(state.tasks, state.filter));
