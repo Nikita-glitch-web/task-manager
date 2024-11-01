@@ -18,7 +18,7 @@ const Filter: React.FC = () => {
       {FILTER_OPTIONS.map(({ label, value }) => (
         <CheckBox
           key={value}
-          type="radio" // Используем радио-кнопку вместо чекбокса
+          type="radio"
           label={label}
           name="filter"
           checked={filter === value}

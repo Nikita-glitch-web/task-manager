@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./RadioButton.module.scss";
+import styles from "./CheckBox.module.scss";
 
 interface CheckBoxProps {
   label: string;
