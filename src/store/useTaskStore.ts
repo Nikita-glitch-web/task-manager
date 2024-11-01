@@ -14,7 +14,6 @@ interface TaskStore {
   setFilter: (filter: "all" | "active" | "completed") => void;
 }
 
-// Функция для фильтрации задач
 const filterTasks = (tasks: ITask[], filter: string): ITask[] => {
   if (filter === "completed") return tasks.filter((task) => task.completed);
   if (filter === "active") return tasks.filter((task) => !task.completed);
@@ -32,7 +31,7 @@ export const useTaskStore = create<TaskStore>((set) => ({
     }));
   },
 
-  removeTask: (taskId) =>
+  removeTask: (taskId: string) =>
     set((state) => ({
       tasks: state.tasks.filter((task) => task.id !== taskId),
     })),
@@ -53,6 +52,7 @@ export const useTaskStore = create<TaskStore>((set) => ({
   setFilter: (filter) => set({ filter }),
 }));
 
-// Создаем селектор для получения отфильтрованных задач
-export const useFilteredTasks = () =>
-  useTaskStore((state) => filterTasks(state.tasks, state.filter));
+export const useFilteredTasks = () => {
+  const { tasks, filter } = useTaskStore();
+  return filterTasks(tasks, filter);
+};
