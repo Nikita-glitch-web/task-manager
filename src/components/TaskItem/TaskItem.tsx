@@ -35,9 +35,9 @@ export const TaskItem: React.FC<ITaskItemProps> = ({
   };
 
   const handleRadioChange = () => {
-    task.toggleCompleted();
-    setSelected(task.completed);
-    onChange(task);
+    const updatedTask = { ...task, completed: !task.completed };
+    setSelected(!selected);
+    onChange(updatedTask);
   };
 
   const renderContent = () => {
@@ -64,7 +64,7 @@ export const TaskItem: React.FC<ITaskItemProps> = ({
           value={task.completed ? "1" : ""}
           checked={selected}
           onChange={handleRadioChange}
-          label={""}
+          label=""
         />
         <span onDoubleClick={handleDoubleClick}>
           {task.text || "Double-click to edit"}
