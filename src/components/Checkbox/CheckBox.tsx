@@ -1,25 +1,27 @@
 import React from "react";
-import styles from "./RadioButton.module.scss";
+import styles from "./CheckBox.module.scss";
 
-interface RadioButtonProps {
+interface CheckBoxProps {
   label: string;
   name: string;
   value: string;
   checked: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  type?: "checkbox" | "radio"; // Добавляем type с двумя возможными значениями
 }
 
-const RadioButton: React.FC<RadioButtonProps> = ({
+export const CheckBox: React.FC<CheckBoxProps> = ({
   name,
   value,
   checked,
   onChange,
   label,
+  type = "checkbox", // значение по умолчанию
 }) => {
   return (
     <label className={styles.label}>
       <input
-        type="checkbox"
+        type={type} // Устанавливаем тип, переданный в пропсах
         name={name}
         value={value}
         checked={checked}
@@ -30,5 +32,3 @@ const RadioButton: React.FC<RadioButtonProps> = ({
     </label>
   );
 };
-
-export default RadioButton;

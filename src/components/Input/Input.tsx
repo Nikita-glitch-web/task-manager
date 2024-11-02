@@ -12,7 +12,7 @@ export const Input: FC<InputProps> = ({
   onChange,
   name,
   autoFocus,
-  id = `${name}-${Math.ceil(Math.random() * 999)}`, // Генеруємо id, якщо його не передали
+  id = `${name}-${Math.ceil(Math.random() * 999)}`,
 }) => {
   return (
     <div className={styles.input_wrapper}>
@@ -26,7 +26,7 @@ export const Input: FC<InputProps> = ({
           onBlur={onBlur}
           value={value}
           name={name}
-          autoFocus={autoFocus} // Додаємо підтримку autoFocus
+          autoFocus={autoFocus}
         />
       </div>
       {errorMessage && (
