@@ -6,12 +6,14 @@ import { CheckBox } from "../Checkbox/CheckBox";
 interface ITaskItemProps {
   task: ITask;
   onChange: (task: ITask) => void;
+  onDelete: (taskId: string) => void;
 }
 
 export const TaskItem: React.FC<ITaskItemProps> = ({
   task,
   onChange,
-}: ITaskItemProps) => {
+  onDelete,
+}) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [labelText, setLabelText] = useState<string>(task.text);
   const [selected, setSelected] = useState<boolean>(task.completed);
@@ -38,6 +40,10 @@ export const TaskItem: React.FC<ITaskItemProps> = ({
     const updatedTask = { ...task, completed: !task.completed };
     setSelected(!selected);
     onChange(updatedTask);
+  };
+
+  const handleDelete = () => {
+    onDelete(task.id);
   };
 
   const renderContent = () => {
@@ -69,6 +75,7 @@ export const TaskItem: React.FC<ITaskItemProps> = ({
         <span onDoubleClick={handleDoubleClick}>
           {task.text || "Double-click to edit"}
         </span>
+        <button onClick={handleDelete}>Удалить</button>
       </>
     );
   };
