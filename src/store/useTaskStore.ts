@@ -1,16 +1,16 @@
 import { create } from "zustand";
 import { ITask } from "../types/task";
 import { Task } from "../models/Task";
+import { getFromStorage, setToStorage } from "../utils/localstorage";
 
 const DEFAULT_TASKS = [new Task("Hello world"), new Task("Hello world2")];
 
 const loadTasksFromLocalStorage = (): ITask[] => {
-  const storedTasks = localStorage.getItem("tasks");
-  return storedTasks ? JSON.parse(storedTasks) : DEFAULT_TASKS;
+  return getFromStorage("tasks", DEFAULT_TASKS).map(Task.fromObject);
 };
 
 const saveTasksToLocalStorage = (tasks: ITask[]) => {
-  localStorage.setItem("tasks", JSON.stringify(tasks));
+  setToStorage("tasks", tasks);
 };
 
 interface TaskStore {
