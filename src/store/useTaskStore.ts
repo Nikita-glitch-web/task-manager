@@ -1,8 +1,17 @@
 import { create } from "zustand";
 import { ITask } from "../types/task";
 import { Task } from "../models/Task";
+import { getFromStorage, setToStorage } from "../utils/localstorage";
 
 const DEFAULT_TASKS = [new Task("Hello world"), new Task("Hello world2")];
+
+const loadTasksFromLocalStorage = (): ITask[] => {
+  return getFromStorage("tasks", DEFAULT_TASKS).map(Task.fromObject);
+};
+
+const saveTasksToLocalStorage = (tasks: ITask[]) => {
+  setToStorage("tasks", tasks);
+};
 
 interface TaskStore {
   tasks: ITask[];
@@ -14,7 +23,6 @@ interface TaskStore {
   setFilter: (filter: "all" | "active" | "completed") => void;
 }
 
-// Функция для фильтрации задач
 const filterTasks = (tasks: ITask[], filter: string): ITask[] => {
   if (filter === "completed") return tasks.filter((task) => task.completed);
   if (filter === "active") return tasks.filter((task) => !task.completed);
@@ -22,20 +30,24 @@ const filterTasks = (tasks: ITask[], filter: string): ITask[] => {
 };
 
 export const useTaskStore = create<TaskStore>((set) => ({
-  tasks: [...DEFAULT_TASKS],
+  tasks: loadTasksFromLocalStorage(),
   filter: "all",
 
   addTask: (taskText: string) => {
     const task = new Task(taskText);
-    set((state) => ({
-      tasks: [...state.tasks, task],
-    }));
+    set((state) => {
+      const updatedTasks = [...state.tasks, task];
+      saveTasksToLocalStorage(updatedTasks);
+      return { tasks: updatedTasks };
+    });
   },
 
-  removeTask: (taskId) =>
-    set((state) => ({
-      tasks: state.tasks.filter((task) => task.id !== taskId),
-    })),
+  removeTask: (taskId: string) =>
+    set((state) => {
+      const updatedTasks = state.tasks.filter((task) => task.id !== taskId);
+      saveTasksToLocalStorage(updatedTasks);
+      return { tasks: updatedTasks };
+    }),
 
   updateTask: (updatedTask) =>
     set((state) => {
@@ -44,15 +56,20 @@ export const useTaskStore = create<TaskStore>((set) => ({
 
       const updatedTasks = [...state.tasks];
       updatedTasks.splice(index, 1, updatedTask);
+      saveTasksToLocalStorage(updatedTasks);
 
       return { tasks: updatedTasks };
     }),
 
-  clearTasks: () => set({ tasks: [] }),
+  clearTasks: () => {
+    saveTasksToLocalStorage([]);
+    set({ tasks: [] });
+  },
 
   setFilter: (filter) => set({ filter }),
 }));
 
-// Создаем селектор для получения отфильтрованных задач
-export const useFilteredTasks = () =>
-  useTaskStore((state) => filterTasks(state.tasks, state.filter));
+export const useFilteredTasks = () => {
+  const { tasks, filter } = useTaskStore();
+  return filterTasks(tasks, filter);
+};
