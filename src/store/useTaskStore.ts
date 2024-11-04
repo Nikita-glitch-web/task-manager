@@ -4,6 +4,15 @@ import { Task } from "../models/Task";
 
 const DEFAULT_TASKS = [new Task("Hello world"), new Task("Hello world2")];
 
+const loadTasksFromLocalStorage = (): ITask[] => {
+  const storedTasks = localStorage.getItem("tasks");
+  return storedTasks ? JSON.parse(storedTasks) : DEFAULT_TASKS;
+};
+
+const saveTasksToLocalStorage = (tasks: ITask[]) => {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+};
+
 interface TaskStore {
   tasks: ITask[];
   filter: "all" | "active" | "completed";
@@ -21,20 +30,24 @@ const filterTasks = (tasks: ITask[], filter: string): ITask[] => {
 };
 
 export const useTaskStore = create<TaskStore>((set) => ({
-  tasks: [...DEFAULT_TASKS],
+  tasks: loadTasksFromLocalStorage(),
   filter: "all",
 
   addTask: (taskText: string) => {
     const task = new Task(taskText);
-    set((state) => ({
-      tasks: [...state.tasks, task],
-    }));
+    set((state) => {
+      const updatedTasks = [...state.tasks, task];
+      saveTasksToLocalStorage(updatedTasks);
+      return { tasks: updatedTasks };
+    });
   },
 
   removeTask: (taskId: string) =>
-    set((state) => ({
-      tasks: state.tasks.filter((task) => task.id !== taskId),
-    })),
+    set((state) => {
+      const updatedTasks = state.tasks.filter((task) => task.id !== taskId);
+      saveTasksToLocalStorage(updatedTasks);
+      return { tasks: updatedTasks };
+    }),
 
   updateTask: (updatedTask) =>
     set((state) => {
@@ -43,11 +56,15 @@ export const useTaskStore = create<TaskStore>((set) => ({
 
       const updatedTasks = [...state.tasks];
       updatedTasks.splice(index, 1, updatedTask);
+      saveTasksToLocalStorage(updatedTasks);
 
       return { tasks: updatedTasks };
     }),
 
-  clearTasks: () => set({ tasks: [] }),
+  clearTasks: () => {
+    saveTasksToLocalStorage([]);
+    set({ tasks: [] });
+  },
 
   setFilter: (filter) => set({ filter }),
 }));
