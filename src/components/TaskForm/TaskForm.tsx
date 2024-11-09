@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import { useTaskStore } from "../../store";
+import FormGroup from "@mui/material/FormGroup";
+import { Input } from "../Input";
+import { ButtonUsage } from "../Button/Button";
+import style from "./TaskFom.module.scss";
 
 export const TaskForm: React.FC = () => {
   const [newTask, setNewTask] = useState<string>("");
@@ -14,17 +18,20 @@ export const TaskForm: React.FC = () => {
   };
 
   return (
-    <div className="task-form-container">
+    <div className={style.task_form_container}>
       <h1>Task Manager</h1>
-      <form onSubmit={addTaskHandler} className="task-input">
-        <input
-          type="text"
-          placeholder="What needs to be done?"
+      <FormGroup className="task-input" onSubmit={addTaskHandler}>
+        <Input
           value={newTask}
           onChange={(e) => setNewTask(e.target.value)}
+          placeholder="What needs to be done?"
+          type="text"
+          name="task"
+          id={""}
+          errorMessage={undefined}
         />
-        <button type="submit">Add Task</button>
-      </form>
+        <ButtonUsage>Add Task</ButtonUsage>
+      </FormGroup>
     </div>
   );
 };

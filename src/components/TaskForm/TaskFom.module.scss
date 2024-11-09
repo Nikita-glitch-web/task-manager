@@ -18,6 +18,15 @@
   cursor: pointer;
 }
 
+.task_form_container {
+  max-width: 300px;
+}
+
+.task-input {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
 .todo-list {
   list-style: none;
   padding: 0;
