@@ -6,10 +6,6 @@ import { TaskList } from "./components/TaskList/TaskList";
 const App: React.FC = () => {
   return (
     <div className="page-wrapper">
-      <header className="app-header">
-        <h1>Task App</h1>
-      </header>
-
       <main>
         <TaskForm></TaskForm>
         <TaskList></TaskList>

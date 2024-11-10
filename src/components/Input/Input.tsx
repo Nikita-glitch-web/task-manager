@@ -1,11 +1,12 @@
 import { FC } from "react";
+import TextField from "@mui/material/TextField";
 import styles from "./Input.module.scss";
 import { InputProps } from "./types";
 
 export const Input: FC<InputProps> = ({
   errorMessage,
   value,
-  type,
+  type = "text",
   placeholder,
   onFocus,
   onBlur,
@@ -16,22 +17,21 @@ export const Input: FC<InputProps> = ({
 }) => {
   return (
     <div className={styles.input_wrapper}>
-      <div className={styles.form_group}>
-        <input
-          type={type}
-          id={id}
-          placeholder={placeholder}
-          onFocus={onFocus}
-          onChange={onChange}
-          onBlur={onBlur}
-          value={value}
-          name={name}
-          autoFocus={autoFocus}
-        />
-      </div>
-      {errorMessage && (
-        <span className={styles.error_message}>{errorMessage}</span>
-      )}
+      <TextField
+        type={type}
+        id={id}
+        label={placeholder}
+        variant="outlined"
+        value={value}
+        onFocus={onFocus}
+        onChange={onChange}
+        onBlur={onBlur}
+        name={name}
+        autoFocus={autoFocus}
+        error={!!errorMessage}
+        helperText={errorMessage}
+        fullWidth
+      />
     </div>
   );
 };
