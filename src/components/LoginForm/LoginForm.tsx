@@ -1,64 +1,69 @@
-import { FC, useState } from "react";
-import { FormGroup } from "@mui/material";
-import TextField from "@mui/material/TextField";
+import React, { useState } from "react";
+import { TextField, FormGroup, Box } from "@mui/material";
 import { ButtonUsage } from "../Button/Button";
-import styles from "./LoginForm.module.scss";
 
-interface LoginFormProps {
-  onSubmit: (credentials: { username: string; password: string }) => void;
+interface Credentials {
+  email: string;
+  password: string;
 }
 
-export const LoginForm: FC<LoginFormProps> = ({ onSubmit }) => {
-  const [username, setUsername] = useState<string>("");
+interface LoginFormProps {
+  onSubmit: (credentials: Credentials) => void;
+}
+
+export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
+  const [email, setEmail] = useState<string>(""); // Изменено username на email
   const [password, setPassword] = useState<string>("");
-  const [usernameError, setUsernameError] = useState<string | null>(null);
-  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [, setError] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!username) {
-      setUsernameError("Username is required");
-    } else {
-      setUsernameError(null);
+    if (!email || !password) {
+      setError("Email and password are required");
+      return;
     }
 
-    if (!password) {
-      setPasswordError("Password is required");
-    } else {
-      setPasswordError(null);
-    }
-
-    if (username && password) {
-      onSubmit({ username, password });
-    }
+    setError(null);
+    onSubmit({ email, password }); // Передаем email вместо username
   };
 
   return (
-    <FormGroup onSubmit={handleSubmit} className={styles.form_wrapper}>
-      <TextField
-        label="Username"
-        variant="outlined"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        error={!!usernameError}
-        helperText={usernameError}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Password"
-        type="password"
-        variant="outlined"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        error={!!passwordError}
-        helperText={passwordError}
-        fullWidth
-        margin="normal"
-      />
-      <ButtonUsage>Login</ButtonUsage>
-    </FormGroup>
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      sx={{
+        width: "100%",
+        maxWidth: 400,
+        margin: "auto",
+        padding: 2,
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+      }}
+    >
+      <FormGroup>
+        <TextField
+          label="Email"
+          type="email"
+          variant="outlined"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          fullWidth
+        />
+      </FormGroup>
+      <FormGroup>
+        <TextField
+          label="Password"
+          type="password"
+          variant="outlined"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          fullWidth
+        />
+      </FormGroup>
+      <ButtonUsage type="submit">Login</ButtonUsage>
+    </Box>
   );
 };
 
