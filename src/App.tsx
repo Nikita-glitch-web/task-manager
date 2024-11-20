@@ -1,17 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./styles/index.scss";
 import { TaskForm } from "./components/TaskForm/TaskForm";
 import { TaskList } from "./components/TaskList/TaskList";
 import ThemeSwitcher from "./components/ThemeToggle/ThemeToggle";
 import { ThemeContextProvider } from "./theme/ThemeContext";
 import { LoginForm } from "./components/LoginForm";
-import { useAuth } from "./hooks/useAuth";
+import { useAuthStore } from "./store/useAuthStore";
+import { IAuthCredentials } from "./types/types";
 
 const App: React.FC = () => {
-  const { isAuthenticated, login } = useAuth();
+  const { user, login } = useAuthStore((state) => ({
+    user: state.user,
+    login: state.login,
+  }));
 
-  if (!isAuthenticated) {
-    return <LoginForm onSubmit={login} />;
+  const [isUserReady, setIsUserReady] = useState(false);
+
+  useEffect(() => {
+    if (user !== null) {
+      setIsUserReady(true);
+    }
+  }, [user]);
+
+  const loginHandler = async (credentials: IAuthCredentials) => {
+    try {
+      await login(credentials);
+    } catch (error) {
+      console.error("Login error", error);
+    }
+  };
+
+  if (!user) {
+    return <LoginForm onSubmit={loginHandler} />;
+  }
+
+  if (!isUserReady) {
+    return <div>Loading...</div>;
   }
 
   return (

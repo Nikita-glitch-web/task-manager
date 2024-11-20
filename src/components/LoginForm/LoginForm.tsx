@@ -1,32 +1,37 @@
-import React, { useState } from "react";
-import { TextField, FormGroup, Box } from "@mui/material";
+import React, { useState, useCallback } from "react";
+import { TextField, Box } from "@mui/material";
+import { IAuthCredentials } from "../../types/types";
 import { ButtonUsage } from "../Button/Button";
 
-interface Credentials {
-  email: string;
-  password: string;
-}
-
 interface LoginFormProps {
-  onSubmit: (credentials: Credentials) => void;
+  onSubmit: (credentials: IAuthCredentials) => Promise<void>;
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
-  const [email, setEmail] = useState<string>(""); // Изменено username на email
+  const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
 
-    if (!email || !password) {
-      setError("Email and password are required");
-      return;
-    }
+      if (!email || !password) {
+        setError("Please fill in both fields.");
+        return;
+      }
 
-    setError(null);
-    onSubmit({ email, password }); // Передаем email вместо username
-  };
+      setError(null);
+
+      try {
+        await onSubmit({ email, password });
+      } catch (error) {
+        setError("Login failed. Please try again.");
+        console.error("Login failed", error);
+      }
+    },
+    [email, password, onSubmit]
+  );
 
   return (
     <Box
@@ -42,29 +47,30 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
         gap: 2,
       }}
     >
-      <FormGroup>
-        <TextField
-          label="Email"
-          type="email"
-          variant="outlined"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          fullWidth
-        />
-      </FormGroup>
-      <FormGroup>
-        <TextField
-          label="Password"
-          type="password"
-          variant="outlined"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          fullWidth
-        />
-      </FormGroup>
+      <TextField
+        label="Email"
+        type="email"
+        variant="outlined"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        fullWidth
+        error={!!error && !email}
+        helperText={!email && error}
+      />
+      <TextField
+        label="Password"
+        type="password"
+        variant="outlined"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        fullWidth
+        error={!!error && !password}
+        helperText={!password && error}
+      />
+      {error && !(!email || !password) && (
+        <Box sx={{ color: "red", textAlign: "center" }}>{error}</Box>
+      )}
       <ButtonUsage type="submit">Login</ButtonUsage>
     </Box>
   );
 };
-
-export default LoginForm;
