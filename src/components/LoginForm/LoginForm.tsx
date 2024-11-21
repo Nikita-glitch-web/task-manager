@@ -2,15 +2,14 @@ import React, { useState, useCallback } from "react";
 import { TextField, Box } from "@mui/material";
 import { IAuthCredentials } from "../../types/types";
 import { ButtonUsage } from "../Button/Button";
+import { useAuthStore } from "../../store/useAuthStore";
 
-interface LoginFormProps {
-  onSubmit: (credentials: IAuthCredentials) => Promise<void>;
-}
-
-export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
+export const LoginForm: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+
+  const login = useAuthStore((state) => state.login);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
@@ -23,14 +22,17 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
 
       setError(null);
 
+      const credentials: IAuthCredentials = { email, password };
+
       try {
-        await onSubmit({ email, password });
-      } catch (error) {
+        await login(credentials);
+        console.log("User logged in successfully");
+      } catch (err) {
         setError("Login failed. Please try again.");
-        console.error("Login failed", error);
+        console.error("Login error:", err);
       }
     },
-    [email, password, onSubmit]
+    [email, password, login]
   );
 
   return (

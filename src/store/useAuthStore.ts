@@ -2,14 +2,18 @@ import { create } from "zustand";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
   User,
 } from "firebase/auth";
 import { auth } from "./firebase.config";
 
 interface IAuthStore {
   user: User | null;
-  login: ({ email, password }: IAuthCredentials) => Promise<void>;
-  signUp: ({ email, password }: IAuthCredentials) => Promise<void>;
+  login: (credentials: IAuthCredentials) => Promise<void>;
+  signUp: (credentials: IAuthCredentials) => Promise<void>;
+  logout: () => Promise<void>;
+  fetchCurrentUser: () => void;
 }
 
 interface IAuthCredentials {
@@ -23,12 +27,7 @@ export const useAuthStore = create<IAuthStore>((set) => ({
   login: async ({ email, password }: IAuthCredentials) => {
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
-      set((state) => {
-        if (state.user?.uid !== user.uid) {
-          return { user };
-        }
-        return {};
-      });
+      set({ user });
     } catch (error) {
       console.error("Login failed:", error);
       throw error;
@@ -47,5 +46,21 @@ export const useAuthStore = create<IAuthStore>((set) => ({
       console.error("Sign up failed:", error);
       throw error;
     }
+  },
+
+  logout: async () => {
+    try {
+      await signOut(auth);
+      set({ user: null });
+    } catch (error) {
+      console.error("Logout failed:", error);
+      throw error;
+    }
+  },
+
+  fetchCurrentUser: () => {
+    onAuthStateChanged(auth, (currentUser) => {
+      set({ user: currentUser });
+    });
   },
 }));

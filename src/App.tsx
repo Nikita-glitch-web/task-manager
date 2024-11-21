@@ -1,58 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./styles/index.scss";
-import { TaskForm } from "./components/TaskForm/TaskForm";
-import { TaskList } from "./components/TaskList/TaskList";
-import ThemeSwitcher from "./components/ThemeToggle/ThemeToggle";
-import { ThemeContextProvider } from "./theme/ThemeContext";
+import { SignUpForm } from "./components/SignUpForm";
 import { LoginForm } from "./components/LoginForm";
-import { useAuthStore } from "./store/useAuthStore";
-import { IAuthCredentials } from "./types/types";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import TaskPage from "./pages/Task";
 
 const App: React.FC = () => {
-  const { user, login } = useAuthStore((state) => ({
-    user: state.user,
-    login: state.login,
-  }));
-
-  const [isUserReady, setIsUserReady] = useState(false);
-
-  useEffect(() => {
-    if (user !== null) {
-      setIsUserReady(true);
-    }
-  }, [user]);
-
-  const loginHandler = async (credentials: IAuthCredentials) => {
-    try {
-      await login(credentials);
-    } catch (error) {
-      console.error("Login error", error);
-    }
-  };
-
-  if (!user) {
-    return <LoginForm onSubmit={loginHandler} />;
-  }
-
-  if (!isUserReady) {
-    return <div>Loading...</div>;
-  }
-
   return (
-    <div className="page-wrapper">
-      <ThemeContextProvider>
-        <div>
-          <ThemeSwitcher />
-          <main>
-            <TaskForm />
-            <TaskList />
-          </main>
-          <footer className="app-footer">
-            <p>© 2024 Task App. All rights reserved.</p>
-          </footer>
-        </div>
-      </ThemeContextProvider>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/tasks" element={<TaskPage />} />
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/signup" element={<SignUpForm />} />
+      </Routes>
+    </Router>
   );
 };
 

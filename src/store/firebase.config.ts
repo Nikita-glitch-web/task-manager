@@ -10,6 +10,7 @@ export const firebaseConfig = {
   // messagingSenderId: process.env.TASK_MANAGER_FIREBASE_MESSAGING_SENDER_ID,
   // appId: process.env.TASK_MANAGER_FIREBASE_APP_ID,
   // measurementId: process.env.TASK_MANAGER_FIREBASE_MEASUREMENT_ID,
+  // databaseURL: process.env.TASK_MANAGER_FIREBASE_DATABASE_URL,
   apiKey: "AIzaSyBm7nxlX-CR-DGrV9jhnz1lYxua0RldvcQ",
   authDomain: "task-manager-8e667.firebaseapp.com",
   databaseURL:
