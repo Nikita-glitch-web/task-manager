@@ -8,17 +8,17 @@ import {
 } from "firebase/auth";
 import { auth } from "./firebase.config";
 
+interface IAuthCredentials {
+  email: string;
+  password: string;
+}
+
 interface IAuthStore {
   user: User | null;
   login: (credentials: IAuthCredentials) => Promise<void>;
   signUp: (credentials: IAuthCredentials) => Promise<void>;
   logout: () => Promise<void>;
   fetchCurrentUser: () => void;
-}
-
-interface IAuthCredentials {
-  email: string;
-  password: string;
 }
 
 export const useAuthStore = create<IAuthStore>((set) => ({

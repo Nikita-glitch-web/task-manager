@@ -2,17 +2,17 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import { ButtonUsage } from "../components/Button/Button";
 
-const TaskPage: React.FC = () => {
+export const IntroPage: React.FC = () => {
   return (
     <Box
       sx={{
         width: "100%",
-        maxWidth: 400,
+        maxWidth: 250,
         margin: "auto",
         padding: 2,
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
+        justifyContent: "space-beetwen",
         gap: 2,
       }}
     >
@@ -21,16 +21,21 @@ const TaskPage: React.FC = () => {
         component="h2"
         sx={{
           fontSize: "20px",
+          textAlign: "center",
         }}
       >
         You can Login or SignUp
       </Typography>
-      <Box sx={{ textAlign: "center" }}>
+      <Box
+        sx={{
+          textAlign: "center",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
         <ButtonUsage href="/login">Login</ButtonUsage>
         <ButtonUsage href="/signup">SignUp</ButtonUsage>
       </Box>
     </Box>
   );
 };
-
-export default TaskPage;
