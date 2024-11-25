@@ -13,7 +13,7 @@ interface IAuthCredentials {
   password: string;
 }
 
-interface IAuthStore {
+export interface IAuthStore {
   user: User | null;
   login: (credentials: IAuthCredentials) => Promise<void>;
   signUp: (credentials: IAuthCredentials) => Promise<void>;
@@ -60,6 +60,7 @@ export const useAuthStore = create<IAuthStore>((set) => ({
 
   fetchCurrentUser: () => {
     onAuthStateChanged(auth, (currentUser) => {
+      console.log('>>>>>>>>', currentUser)
       set({ user: currentUser });
     });
   },

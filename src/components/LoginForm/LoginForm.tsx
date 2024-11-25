@@ -1,10 +1,11 @@
 import React, { useState, useCallback } from "react";
 import { TextField, Box } from "@mui/material";
 import { IAuthCredentials } from "../../types/types";
-import { ButtonUsage } from "../Button/Button";
+import { Button } from "../Button/Button";
 import { useAuthStore } from "../../store/useAuthStore";
-
+import { useNavigate } from "react-router-dom";
 export const LoginForm: React.FC = () => {
+  const navigate = useNavigate(); // Get the navigate function
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
@@ -26,6 +27,7 @@ export const LoginForm: React.FC = () => {
 
       try {
         await login(credentials);
+        navigate('/tasks');
         console.log("User logged in successfully");
       } catch (err) {
         setError("Login failed. Please try again.");
@@ -72,7 +74,7 @@ export const LoginForm: React.FC = () => {
       {error && !(!email || !password) && (
         <Box sx={{ color: "red", textAlign: "center" }}>{error}</Box>
       )}
-      <ButtonUsage type="submit">Login</ButtonUsage>
+      <Button type="submit">Login</Button>
     </Box>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { TextField, Box } from "@mui/material";
 import { IAuthCredentials } from "../../types/types";
-import { ButtonUsage } from "../Button/Button";
+import { Button } from "../Button/Button";
 import { useAuthStore } from "../../store/useAuthStore";
 
 export const SignUpForm: React.FC = () => {
@@ -88,7 +88,7 @@ export const SignUpForm: React.FC = () => {
       {error && !email && (
         <Box sx={{ color: "red", textAlign: "center" }}>{error}</Box>
       )}
-      <ButtonUsage type="submit">Sign Up</ButtonUsage>
+      <Button type="submit">Sign Up</Button>
     </Box>
   );
 };

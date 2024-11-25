@@ -1,8 +1,8 @@
 import { FC } from "react";
-import Button from "@mui/material/Button";
+import { Button as MUIButton } from "@mui/material";
 import { Link } from "react-router-dom"; // Імпортуємо Link для внутрішніх посилань
 
-interface ButtonUsageProps {
+interface ButtonProps {
   onClick?: () => void;
   children: string;
   type?: "button" | "submit" | "reset"; // Тип кнопки
@@ -10,7 +10,7 @@ interface ButtonUsageProps {
   to?: string; // Для внутрішнього посилання (React Router)
 }
 
-export const ButtonUsage: FC<ButtonUsageProps> = ({
+export const Button: FC<ButtonProps> = ({
   onClick,
   children,
   type = "button",
@@ -20,7 +20,7 @@ export const ButtonUsage: FC<ButtonUsageProps> = ({
   // Якщо передано href, то це зовнішнє посилання
   if (href) {
     return (
-      <Button
+      <MUIButton
         variant="contained"
         onClick={onClick}
         type={type}
@@ -29,13 +29,13 @@ export const ButtonUsage: FC<ButtonUsageProps> = ({
         target="_blank"
       >
         {children}
-      </Button>
+      </MUIButton>
     );
   }
 
   if (to) {
     return (
-      <Button
+      <MUIButton
         variant="contained"
         onClick={onClick}
         type={type}
@@ -43,13 +43,13 @@ export const ButtonUsage: FC<ButtonUsageProps> = ({
         to={to}
       >
         {children}
-      </Button>
+      </MUIButton>
     );
   }
 
   return (
-    <Button variant="contained" onClick={onClick} type={type}>
+    <MUIButton variant="contained" onClick={onClick} type={type}>
       {children}
-    </Button>
+    </MUIButton>
   );
 };
