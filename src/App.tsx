@@ -1,26 +1,48 @@
 import React from "react";
 import "./styles/index.scss";
-import { TaskForm } from "./components/TaskForm/TaskForm";
-import { TaskList } from "./components/TaskList/TaskList";
-import ThemeSwitcher from "./components/ThemeToggle/ThemeToggle";
-import { ThemeContextProvider } from "./theme/ThemeContext";
+import { SignUpForm } from "./components/SignUpForm";
+import { LoginForm } from "./components/LoginForm";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+import TaskPage from "./pages/Task";
+import { AuthPage } from "./pages/Auth";
+import { AuthProvider, useAuthContext } from "./contexts/AuthContext";
+
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const { user } = useAuthContext();
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <>{children}</>;
+};
 
 const App: React.FC = () => {
   return (
-    <div className="page-wrapper">
-      <ThemeContextProvider>
-        <div>
-          <ThemeSwitcher />
-          <main>
-            <TaskForm></TaskForm>
-            <TaskList></TaskList>
-          </main>
-          <footer className="app-footer">
-            <p>© 2024 Task App. All rights reserved.</p>
-          </footer>
-        </div>
-      </ThemeContextProvider>
-    </div>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<AuthPage />} />
+          <Route
+            path="/tasks"
+            element={
+              <ProtectedRoute>
+                <TaskPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/signup" element={<SignUpForm />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 };
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useTaskStore } from "../../store";
 import FormGroup from "@mui/material/FormGroup";
 import { Input } from "../Input";
-import { ButtonUsage } from "../Button/Button";
+import { Button } from "../Button/Button";
 import style from "./TaskFom.module.scss";
 
 export const TaskForm: React.FC = () => {
@@ -30,7 +30,7 @@ export const TaskForm: React.FC = () => {
           id={""}
           errorMessage={undefined}
         />
-        <ButtonUsage>Add Task</ButtonUsage>
+        <Button>Add Task</Button>
       </FormGroup>
     </div>
   );
