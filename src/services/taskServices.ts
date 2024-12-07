@@ -7,6 +7,7 @@ import {
   doc,
 } from "firebase/firestore";
 import { db } from "../store/firebase.config";
+import { Task } from "../models/Task";
 
 export const addTask = async (task: { title: string; completed: boolean }) => {
   try {
@@ -18,13 +19,17 @@ export const addTask = async (task: { title: string; completed: boolean }) => {
   }
 };
 
-export const fetchTasks = async () => {
+export const fetchTasks = async (): Promise<Task[]> => {
   try {
     const querySnapshot = await getDocs(collection(db, "tasks"));
-    return querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    return querySnapshot.docs.map((doc) =>
+      Task.fromObject({
+        id: doc.id,
+        ...doc.data(),
+        text: "",
+        completed: false,
+      })
+    ); // Використання
   } catch (error) {
     console.error("Error fetching tasks: ", error);
     throw error;

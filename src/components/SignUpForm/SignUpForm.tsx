@@ -3,6 +3,7 @@ import { TextField, Box } from "@mui/material";
 import { IAuthCredentials } from "../../types/types";
 import { Button } from "../Button/Button";
 import { useAuthStore } from "../../store/useAuthStore";
+import { useNavigate } from "react-router-dom"; // Додано для перенаправлення
 
 export const SignUpForm: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -11,6 +12,7 @@ export const SignUpForm: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const signUp = useAuthStore((state) => state.signUp);
+  const navigate = useNavigate(); // Ініціалізація хука для навігації
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
@@ -33,12 +35,13 @@ export const SignUpForm: React.FC = () => {
       try {
         await signUp(credentials);
         console.log("User signed up successfully");
+        navigate("/tasks"); // Перенаправлення на сторінку /tasks
       } catch (err) {
         setError("Failed to sign up. Please try again.");
         console.error("Sign-up error:", err);
       }
     },
-    [email, password, confirmPassword, signUp]
+    [email, password, confirmPassword, signUp, navigate]
   );
 
   return (

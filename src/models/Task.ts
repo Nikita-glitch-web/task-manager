@@ -28,9 +28,14 @@ export class Task implements ITask {
 
   static fromObject(obj: {
     id: string;
-    text: string;
+    text?: string; // Опціональна підтримка text
+    title?: string; // Опціональна підтримка title
     completed: boolean;
   }): Task {
-    return new Task(obj.text, obj.completed, obj.id);
+    return new Task(
+      obj.text || obj.title || "Unnamed Task",
+      obj.completed,
+      obj.id
+    );
   }
 }
