@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { TextField, Box } from "@mui/material";
 import { IAuthCredentials } from "../../types/types";
-import { Button } from "../Button/Button";
+import { CustomButton } from "../Button/Button";
 import { useAuthStore } from "../../store/useAuthStore";
 import { useNavigate } from "react-router-dom"; // Додано для перенаправлення
 
@@ -91,7 +91,7 @@ export const SignUpForm: React.FC = () => {
       {error && !email && (
         <Box sx={{ color: "red", textAlign: "center" }}>{error}</Box>
       )}
-      <Button type="submit">Sign Up</Button>
+      <CustomButton type="submit">Sign Up</CustomButton>
     </Box>
   );
 };

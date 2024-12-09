@@ -10,7 +10,7 @@ interface ButtonProps {
   to?: string; // Для внутрішнього посилання (React Router)
 }
 
-export const Button: FC<ButtonProps> = ({
+export const CustomButton: FC<ButtonProps> = ({
   onClick,
   children,
   type = "button",

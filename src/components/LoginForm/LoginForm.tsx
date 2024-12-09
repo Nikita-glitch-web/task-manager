@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { TextField, Box } from "@mui/material";
 import { IAuthCredentials } from "../../types/types";
-import { Button } from "../Button/Button";
+import { CustomButton } from "../Button/Button";
 import { useAuthStore } from "../../store/useAuthStore";
 import { useNavigate } from "react-router-dom";
 export const LoginForm: React.FC = () => {
@@ -27,7 +27,7 @@ export const LoginForm: React.FC = () => {
 
       try {
         await login(credentials);
-        navigate('/tasks');
+        navigate("/tasks");
         console.log("User logged in successfully");
       } catch (err) {
         setError("Login failed. Please try again.");
@@ -74,7 +74,7 @@ export const LoginForm: React.FC = () => {
       {error && !(!email || !password) && (
         <Box sx={{ color: "red", textAlign: "center" }}>{error}</Box>
       )}
-      <Button type="submit">Login</Button>
+      <CustomButton type="submit">Login</CustomButton>
     </Box>
   );
 };

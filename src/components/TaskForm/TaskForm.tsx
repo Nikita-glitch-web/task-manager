@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useTaskStore } from "../../store";
 import { Input } from "../Input";
-import { Button } from "../Button/Button";
+import { CustomButton } from "../Button/Button";
 import style from "./TaskFom.module.scss";
 
 export const TaskForm: React.FC = () => {
@@ -29,7 +29,7 @@ export const TaskForm: React.FC = () => {
           id={""}
           errorMessage={undefined}
         />
-        <Button>Add Task</Button>
+        <CustomButton type="submit">Add Task</CustomButton>
       </form>
     </div>
   );
