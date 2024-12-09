@@ -41,7 +41,7 @@ export const useTaskStore = create<TaskStore>((set) => ({
   loadTasks: async () => {
     try {
       const tasksFromFirestore = await fetchTasksService();
-      const mappedTasks = tasksFromFirestore.map((task: any) =>
+      const mappedTasks = tasksFromFirestore.map((task: ITask) =>
         Task.fromObject(task)
       ); // Перетворення у Task
       set({ tasks: mappedTasks });
@@ -54,7 +54,7 @@ export const useTaskStore = create<TaskStore>((set) => ({
   addTask: async (taskText: string) => {
     try {
       const newTask = await addTaskService({
-        title: taskText,
+        text: taskText,
         completed: false,
       });
       const mappedNewTask = Task.fromObject(newTask); // Перетворення у Task

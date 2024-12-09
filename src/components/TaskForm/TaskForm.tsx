@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useTaskStore } from "../../store";
-import FormGroup from "@mui/material/FormGroup";
 import { Input } from "../Input";
 import { Button } from "../Button/Button";
 import style from "./TaskFom.module.scss";
@@ -20,7 +19,7 @@ export const TaskForm: React.FC = () => {
   return (
     <div className={style.task_form_container}>
       <h1>Task Manager</h1>
-      <FormGroup className="task-input" onSubmit={addTaskHandler}>
+      <form className="task-input" onSubmit={addTaskHandler}>
         <Input
           value={newTask}
           onChange={(e) => setNewTask(e.target.value)}
@@ -31,7 +30,7 @@ export const TaskForm: React.FC = () => {
           errorMessage={undefined}
         />
         <Button>Add Task</Button>
-      </FormGroup>
+      </form>
     </div>
   );
 };
