@@ -1,10 +1,11 @@
-import { ITask } from "../../types/task";
-import { TaskItem } from "../TaskItem/TaskItem";
-import { useTaskStore, useFilteredTasks } from "../../store/useTaskStore";
-import Filter from "../Filter/Filter";
+import { ITask } from '../../types/task';
+import { TaskItem } from '../TaskItem/TaskItem';
+import { useTaskStore, useFilteredTasks } from '../../store/useTaskStore';
+import Filter from '../Filter/Filter';
+import { useEffect } from 'react';
 
 export const TaskList = () => {
-  const { updateTask, removeTask } = useTaskStore();
+  const { updateTask, removeTask, loadTasks } = useTaskStore();
   const filteredTasks = useFilteredTasks();
 
   const handleUpdate = (task: ITask) => {
@@ -14,6 +15,11 @@ export const TaskList = () => {
   const handleDelete = (taskId: string) => {
     removeTask(taskId);
   };
+
+  useEffect(() => {
+    console.log('>>>111');
+    loadTasks();
+  }, [loadTasks]);
 
   return (
     <>

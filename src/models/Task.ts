@@ -1,6 +1,5 @@
-import { ITask } from "../types/task";
+import { ITask } from '../types/task';
 
-// Це клас, що реалізує інтерфейс ITask
 export class Task implements ITask {
   public id: string;
   public text: string;
@@ -31,6 +30,6 @@ export class Task implements ITask {
     text: string;
     completed: boolean;
   }): Task {
-    return new Task(obj.text, obj.completed, obj.id);
+    return new Task(obj.text || 'Unnamed Task', obj.completed, obj.id);
   }
 }

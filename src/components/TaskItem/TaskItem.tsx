@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Input from "../Input/Input";
 import { ITask } from "../../types/task";
 import { CheckBox } from "../Checkbox/CheckBox";
-import { ButtonUsage } from "../Button/Button";
+import { CustomButton } from "../Button/Button";
 interface ITaskItemProps {
   task: ITask;
   onChange: (task: ITask) => void;
@@ -75,7 +75,7 @@ export const TaskItem: React.FC<ITaskItemProps> = ({
         <span onDoubleClick={handleDoubleClick}>
           {task.text || "Double-click to edit"}
         </span>
-        <ButtonUsage onClick={handleDelete}>Удалить</ButtonUsage>
+        <CustomButton onClick={handleDelete}>Удалить</CustomButton>
       </>
     );
   };
