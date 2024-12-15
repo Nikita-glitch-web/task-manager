@@ -1,9 +1,9 @@
 import React, { useState, useCallback } from "react";
-import { TextField, Box } from "@mui/material";
+import { TextField, Box, Typography } from "@mui/material";
 import { IAuthCredentials } from "../../types/types";
-import { CustomButton } from "../Button/Button";
+import { CustomButton } from "../../theme/theme";
 import { useAuthStore } from "../../store/useAuthStore";
-import { useNavigate } from "react-router-dom"; // Додано для перенаправлення
+import { useNavigate } from "react-router-dom";
 
 export const SignUpForm: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -12,7 +12,7 @@ export const SignUpForm: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const signUp = useAuthStore((state) => state.signUp);
-  const navigate = useNavigate(); // Ініціалізація хука для навігації
+  const navigate = useNavigate();
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
@@ -46,52 +46,86 @@ export const SignUpForm: React.FC = () => {
 
   return (
     <Box
-      component="form"
-      onSubmit={handleSubmit}
       sx={{
-        width: "100%",
-        maxWidth: 400,
-        margin: "auto",
-        padding: 2,
+        height: "100vh",
         display: "flex",
+        alignItems: "center",
         flexDirection: "column",
-        gap: 2,
+        justifyContent: "center",
+        backgroundColor: "#f5f5f5",
+        position: "relative",
       }}
     >
-      <TextField
-        label="Email"
-        type="email"
-        variant="outlined"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        fullWidth
-        error={!!error && !email}
-        helperText={!email && error}
-      />
-      <TextField
-        label="Password"
-        type="password"
-        variant="outlined"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        fullWidth
-        error={!!error && !password}
-        helperText={!password && error}
-      />
-      <TextField
-        label="Confirm Password"
-        type="password"
-        variant="outlined"
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-        fullWidth
-        error={!!error && !confirmPassword}
-        helperText={!confirmPassword && error}
-      />
-      {error && !email && (
-        <Box sx={{ color: "red", textAlign: "center" }}>{error}</Box>
-      )}
-      <CustomButton type="submit">Sign Up</CustomButton>
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{
+          width: 400,
+          padding: 4,
+          backgroundColor: "#fff",
+          borderRadius: 2,
+          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)", // Тінь для форми
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+        }}
+      >
+        <Typography variant="h1" sx={{ textAlign: "center", marginBottom: 2 }}>
+          Sign Up
+        </Typography>
+
+        <TextField
+          label="Email"
+          type="email"
+          variant="outlined"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          fullWidth
+          error={!!error && !email}
+          helperText={!email && error}
+        />
+
+        <TextField
+          label="Password"
+          type="password"
+          variant="outlined"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          fullWidth
+          error={!!error && !password}
+          helperText={!password && error}
+        />
+
+        <TextField
+          label="Confirm Password"
+          type="password"
+          variant="outlined"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          fullWidth
+          error={!!error && !confirmPassword}
+          helperText={!confirmPassword && error}
+        />
+
+        {error && !email && (
+          <Box sx={{ color: "red", textAlign: "center" }}>{error}</Box>
+        )}
+
+        <CustomButton type="submit">Sign Up</CustomButton>
+        <CustomButton type="submit">Login</CustomButton>
+      </Box>
+      {/* <Box sx={{ width: "100%", height: "100%" }}>
+        <ImageList variant="masonry" cols={3} gap={8}>
+          <ImageListItem>
+            <img
+              src="./public/bike_img.png"
+              alt=""
+              loading="lazy"
+              style={{ borderRadius: "8px" }}
+            />
+          </ImageListItem>
+        </ImageList>
+      </Box> */}
     </Box>
   );
 };
