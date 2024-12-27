@@ -43,14 +43,24 @@ export const lightTheme = createTheme({
   },
 });
 
+// Темная тема
 export const darkTheme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: "#90caf9",
+      main: "#00000073",
+    },
+
+    secondary: {
+      main: "#EEBF3D",
     },
     background: {
-      default: "#121212",
+      default: "#373737",
+      paper: "#424242",
+    },
+    text: {
+      primary: "#FFFFFF",
+      secondary: "#B0B0B0",
     },
   },
   typography: {

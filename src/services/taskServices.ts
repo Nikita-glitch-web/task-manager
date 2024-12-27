@@ -63,6 +63,7 @@ export const updateTask = async (
   updatedFields: Record<string, any>
 ) => {
   try {
+    console.log(db);
     const docRef = doc(db, "tasks", id);
     await updateDoc(docRef, updatedFields);
     return { id, ...updatedFields };
@@ -75,6 +76,7 @@ export const updateTask = async (
 export const deleteTask = async (id: string) => {
   try {
     const docRef = doc(db, "tasks", id);
+    console.log(docRef);
     await deleteDoc(docRef);
     return id;
   } catch (error) {

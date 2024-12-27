@@ -3,6 +3,7 @@ import { TaskForm } from "../components/TaskForm";
 import { TaskList } from "../components/TaskList";
 import ThemeSwitcher from "../components/ThemeToggle/ThemeToggle";
 import { Box } from "@mui/material";
+import style from "./Task.module.scss";
 
 const TaskPage: React.FC = () => {
   return (
@@ -20,6 +21,7 @@ const TaskPage: React.FC = () => {
             width: "100",
             display: "flex",
             justifyContent: "end",
+            marginBottom: "20px",
           }}
         >
           <ThemeSwitcher />
@@ -28,7 +30,7 @@ const TaskPage: React.FC = () => {
           <TaskForm />
           <TaskList />
         </main>
-        <footer className="app-footer">
+        <footer className={style.app_footer}>
           <p>© 2024 Task App. All rights reserved.</p>
         </footer>
       </Box>

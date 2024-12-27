@@ -35,6 +35,10 @@ export const LoginForm: React.FC = () => {
     [email, password, login, navigate]
   );
 
+  const handleSignupRedirect = () => {
+    navigate("/signup"); // Редирект на страницу регистрации
+  };
+
   return (
     <Box
       sx={{
@@ -85,7 +89,7 @@ export const LoginForm: React.FC = () => {
         <CustomButton type="submit">
           <Typography variant="body1">Login</Typography>
         </CustomButton>
-        <CustomButton type="submit">
+        <CustomButton onClick={handleSignupRedirect}>
           <Typography variant="body1">Signup</Typography>
         </CustomButton>
       </Box>

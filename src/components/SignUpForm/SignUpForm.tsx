@@ -35,7 +35,7 @@ export const SignUpForm: React.FC = () => {
       try {
         await signUp(credentials);
         console.log("User signed up successfully");
-        navigate("/tasks"); // Перенаправлення на сторінку /tasks
+        navigate("/tasks"); // Перенаправление на страницу /tasks
       } catch (err) {
         setError("Failed to sign up. Please try again.");
         console.error("Sign-up error:", err);
@@ -43,6 +43,10 @@ export const SignUpForm: React.FC = () => {
     },
     [email, password, confirmPassword, signUp, navigate]
   );
+
+  const handleLoginRedirect = () => {
+    navigate("/login"); // Перенаправление на страницу входа
+  };
 
   return (
     <Box
@@ -64,7 +68,7 @@ export const SignUpForm: React.FC = () => {
           padding: 4,
           backgroundColor: "#fff",
           borderRadius: 2,
-          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)", // Тінь для форми
+          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)", // Тень для формы
           display: "flex",
           flexDirection: "column",
           gap: 2,
@@ -107,25 +111,11 @@ export const SignUpForm: React.FC = () => {
           helperText={!confirmPassword && error}
         />
 
-        {error && !email && (
-          <Box sx={{ color: "red", textAlign: "center" }}>{error}</Box>
-        )}
+        {error && <Box sx={{ color: "red", textAlign: "center" }}>{error}</Box>}
 
         <CustomButton type="submit">Sign Up</CustomButton>
-        <CustomButton type="submit">Login</CustomButton>
+        <CustomButton onClick={handleLoginRedirect}>Login</CustomButton>
       </Box>
-      {/* <Box sx={{ width: "100%", height: "100%" }}>
-        <ImageList variant="masonry" cols={3} gap={8}>
-          <ImageListItem>
-            <img
-              src="./public/bike_img.png"
-              alt=""
-              loading="lazy"
-              style={{ borderRadius: "8px" }}
-            />
-          </ImageListItem>
-        </ImageList>
-      </Box> */}
     </Box>
   );
 };

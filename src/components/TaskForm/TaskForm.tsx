@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useTaskStore } from "../../store";
-import { TextField, Box, Button, Typography } from "@mui/material";
+import { TextField, Box } from "@mui/material";
 import style from "./TaskFom.module.scss";
 
 export const TaskForm: React.FC = () => {
@@ -19,36 +19,41 @@ export const TaskForm: React.FC = () => {
   return (
     <Box
       className={style.task_form_container}
-      sx={{ textAlign: "center", mt: 4 }}
+      sx={{
+        mt: 4,
+        py: 2,
+        boxShadow: "0px 3px 9px 2px rgba(0, 0, 0, 0.21)",
+        maxWidth: "600px",
+        margin: "0 auto",
+        borderRadius: "8px",
+        bgcolor: "white",
+        paddingLeft: "20px",
+        paddingRight: "20px",
+        marginTop: "25px",
+      }}
     >
-      <Typography variant="h4" gutterBottom>
-        Task Manager
-      </Typography>
       <form
         onSubmit={addTaskHandler}
-        style={{ display: "flex", justifyContent: "center" }}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "12px",
+        }}
       >
         <TextField
           variant="standard" // Нижнє підкреслення
-          placeholder="What needs to be done?"
+          placeholder="What should be done?"
           value={newTask}
           onChange={(e) => setNewTask(e.target.value)}
           sx={{
-            mr: 2, // Відступ справа
-            width: "300px", // Ширина інпуту
+            width: "600px", // Ширина інпуту
+            input: {
+              textAlign: "left",
+              fontSize: "24px",
+            },
           }}
         />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          sx={{
-            height: "40px",
-            mt: "auto", // Вирівнювання по вертикалі
-          }}
-        >
-          Add Task
-        </Button>
       </form>
     </Box>
   );
