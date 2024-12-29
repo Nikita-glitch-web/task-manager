@@ -1,4 +1,10 @@
-import { PropsWithChildren, createContext, useContext, useEffect } from "react";
+import {
+  PropsWithChildren,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useAuthStore } from "../store/useAuthStore";
 
 interface IAuthContext {
@@ -6,6 +12,7 @@ interface IAuthContext {
   login: unknown;
   signUp: unknown;
   logout: unknown;
+  isLoading: boolean; // Додаємо індикатор завантаження
 }
 
 const AuthContext = createContext<IAuthContext | undefined>(undefined);
@@ -18,14 +25,25 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   }
 
   const { user, login, signUp, logout, fetchCurrentUser } = authStore;
+  const [isLoading, setIsLoading] = useState(true); // Індикатор завантаження
 
   useEffect(() => {
-    fetchCurrentUser();
-  }, []);
+    const initializeUser = async () => {
+      try {
+        await fetchCurrentUser();
+      } catch (error) {
+        console.error("Error fetching current user:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initializeUser();
+  }, [fetchCurrentUser]);
 
   return (
-    <AuthContext.Provider value={{ user, login, signUp, logout }}>
-      {children}
+    <AuthContext.Provider value={{ user, login, signUp, logout, isLoading }}>
+      {isLoading ? <div>Loading...</div> : children}
     </AuthContext.Provider>
   );
 };

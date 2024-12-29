@@ -11,19 +11,18 @@ import { db } from "../store/firebase.config";
 import { Task } from "../models/Task";
 import { ITaskData } from "../types/task";
 
+const getPath = () => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error("User is not authenticated");
+  }
+  return `users/${user?.uid}/tasks`;
+};
+
 export const addTask = async (task: ITaskData) => {
   try {
-    const auth = getAuth();
-    const user = auth.currentUser;
-
-    if (!user) {
-      throw new Error("User is not authenticated");
-    }
-
-    const docRef = await addDoc(
-      collection(db, `users/${user.uid}/tasks`),
-      task
-    );
+    const docRef = await addDoc(collection(db, getPath()), task);
     return { id: docRef.id, ...task };
   } catch (error) {
     console.error("Error adding task: ", error);
@@ -33,15 +32,7 @@ export const addTask = async (task: ITaskData) => {
 
 export const fetchTasks = async (): Promise<Task[]> => {
   try {
-    const auth = getAuth();
-    const user = auth.currentUser;
-
-    if (!user) {
-      throw new Error("User is not authenticated");
-    }
-    const querySnapshot = await getDocs(
-      collection(db, `users/${user.uid}/tasks`)
-    );
+    const querySnapshot = await getDocs(collection(db, getPath()));
     console.log(">>>>>>>>>", querySnapshot.docs);
     return querySnapshot.docs.map((doc) => {
       const rawTask = {
@@ -63,7 +54,20 @@ export const updateTask = async (
   updatedFields: Record<string, any>
 ) => {
   try {
-    const docRef = doc(db, "tasks", id);
+    //     const path = [
+    // "projects",
+    // "task-manager-8e667",
+    // "databases",
+    // "(default)",
+    // "documents",
+    // "users",
+    // "pkugW9JAG1cLcgC2rdNMQL4hvGq1",
+    // "tasks",
+    // "0hsAh8HCbcKeW8gRPgcw"]
+
+    const docRef = doc(db, getPath(), id);
+    console.log("Document reference:", docRef);
+    console.log(updatedFields);
     await updateDoc(docRef, updatedFields);
     return { id, ...updatedFields };
   } catch (error) {
@@ -74,7 +78,8 @@ export const updateTask = async (
 
 export const deleteTask = async (id: string) => {
   try {
-    const docRef = doc(db, "tasks", id);
+    const docRef = doc(db, getPath(), id);
+    console.log(docRef);
     await deleteDoc(docRef);
     return id;
   } catch (error) {
