@@ -4,8 +4,10 @@ import { useTaskStore, useFilteredTasks } from "../../store/useTaskStore";
 import Filter from "../Filter/Filter";
 import { useEffect, useState } from "react";
 import { Box, Typography, CircularProgress, Alert } from "@mui/material";
+import { useTheme } from "@mui/material/styles"; // Імпортуємо хук
 
 export const TaskList = () => {
+  const theme = useTheme();
   const { updateTask, removeTask, loadTasks, clearTasks } = useTaskStore();
   const filteredTasks = useFilteredTasks();
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -13,11 +15,11 @@ export const TaskList = () => {
 
   const handleUpdate = (updatedTask: ITask) => {
     console.log("111", updatedTask);
-    updateTask(updatedTask); // Оновлення задачі в глобальному стані
+    updateTask(updatedTask);
   };
 
   const handleDelete = (taskId: string) => {
-    removeTask(taskId); // Видалення задачі з глобального стану
+    removeTask(taskId);
   };
 
   useEffect(() => {
@@ -26,11 +28,11 @@ export const TaskList = () => {
         setIsLoading(true);
         setError(null);
 
-        await loadTasks(); // Завантаження задач
+        await loadTasks();
       } catch (err: unknown) {
         const errorMessage =
           err instanceof Error ? err.message : "An unknown error occurred.";
-        setError(errorMessage); // Обробка помилок
+        setError(errorMessage);
       } finally {
         setIsLoading(false);
       }
@@ -74,6 +76,8 @@ export const TaskList = () => {
         margin: "0 auto",
         bgcolor: "white",
         marginTop: "20px",
+        backgroundColor:
+          theme.palette.mode === "dark" ? "#00000073" : "#ffffff", // В залежності від теми
       }}
     >
       <Typography variant="h5" gutterBottom>

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { TextField, Box } from "@mui/material";
+import { TextField, Box, Typography } from "@mui/material";
 import { ITask } from "../../types/task";
 import { CheckBox } from "../Checkbox/CheckBox";
 import { CustomButton } from "../Button/Button";
 import style from "./TaskItem.module.scss";
-
 interface ITaskItemProps {
   task: ITask;
   onChange: (task: ITask) => void; // Це функція, яку викликає батьківський компонент для оновлення задачі
@@ -87,18 +86,35 @@ export const TaskItem: React.FC<ITaskItemProps> = ({
     }
     return (
       <>
-        <CheckBox
-          type="radio"
-          name={`task-${task.id}`}
-          value={task.completed ? "1" : ""}
-          checked={selected}
-          onChange={handleRadioChange}
-          label=""
-        />
-        <span className={style.task_text} onDoubleClick={handleDoubleClick}>
-          {task.text || "Double-click to edit"}
-        </span>
-        <CustomButton onClick={handleDelete}>Delete</CustomButton>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <CheckBox
+            type="radio"
+            name={`task-${task.id}`}
+            value={task.completed ? "1" : ""}
+            checked={selected}
+            onChange={handleRadioChange}
+            label=""
+          />
+          <Typography
+            onDoubleClick={handleDoubleClick}
+            style={{ cursor: "pointer", fontSize: "inherit" }}
+          >
+            {task.text || "Double-click to edit"}
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            paddingLeft: "25px",
+          }}
+        >
+          <CustomButton onClick={handleDelete}>Delete</CustomButton>
+        </Box>
       </>
     );
   };

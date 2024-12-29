@@ -43,40 +43,50 @@ export const lightTheme = createTheme({
   },
 });
 
-// Темная тема
 export const darkTheme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: "#00000073",
+      main: "#1E88E5",
+      contrastText: "#FFFFFF",
     },
-
     secondary: {
-      main: "#EEBF3D",
+      main: "#FFC107",
+      contrastText: "#000000",
     },
     background: {
-      default: "#373737",
-      paper: "#424242",
+      default: "#121212",
+      paper: "#1E1E1E",
     },
     text: {
-      primary: "#FFFFFF",
-      secondary: "#B0B0B0",
+      primary: "#FFFFFF", // Білий колір для основного тексту
+      secondary: "#FFFFFF", // Білий колір для вторинного тексту
     },
   },
   typography: {
     h1: {
-      color: "#EEBF3D",
+      color: "#FFC107",
       fontSize: "32px",
       fontWeight: 700,
       lineHeight: "37.5px",
       textAlign: "center",
     },
+    h5: {
+      fontSize: "32px",
+      color: "white",
+    },
     body1: {
-      color: "#FFFFFF",
+      color: "#FFFFFF", //Забезпечуємо білий колір для body1 тут також, для більшої впевненості
       fontSize: "16px",
       fontWeight: 400,
       lineHeight: "24px",
-      textAlign: "center",
+      textAlign: "left",
+    },
+    body2: {
+      color: "#FFFFFF", //Забезпечуємо білий колір для body2 тут також, для більшої впевненості
+      fontSize: "14px",
+      fontWeight: 400,
+      lineHeight: "21px",
     },
   },
 });

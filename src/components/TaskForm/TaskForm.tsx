@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { useTaskStore } from "../../store";
 import { TextField, Box } from "@mui/material";
 import style from "./TaskFom.module.scss";
+import { useTheme } from "@mui/material/styles";
 
 export const TaskForm: React.FC = () => {
+  const theme = useTheme();
+
   const [newTask, setNewTask] = useState<string>(""); // Стан для нової задачі
   const { addTask } = useTaskStore(); // Додавання задачі зі стану
 
@@ -26,7 +29,8 @@ export const TaskForm: React.FC = () => {
         maxWidth: "600px",
         margin: "0 auto",
         borderRadius: "8px",
-        bgcolor: "white",
+        backgroundColor:
+          theme.palette.mode === "dark" ? "#00000073" : "#ffffff",
         paddingLeft: "20px",
         paddingRight: "20px",
         marginTop: "25px",
