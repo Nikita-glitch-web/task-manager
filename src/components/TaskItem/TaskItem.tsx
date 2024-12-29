@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import Input from "../Input/Input";
+import { TextField, Box, Typography } from "@mui/material";
 import { ITask } from "../../types/task";
 import { CheckBox } from "../Checkbox/CheckBox";
 import { CustomButton } from "../Button/Button";
+import style from "./TaskItem.module.scss";
 interface ITaskItemProps {
   task: ITask;
-  onChange: (task: ITask) => void;
+  onChange: (task: ITask) => void; // Це функція, яку викликає батьківський компонент для оновлення задачі
   onDelete: (taskId: string) => void;
 }
 
@@ -19,8 +20,9 @@ export const TaskItem: React.FC<ITaskItemProps> = ({
   const [selected, setSelected] = useState<boolean>(task.completed);
 
   useEffect(() => {
-    setSelected(task.completed);
-  }, [task.completed]);
+    setLabelText(task.text); // Синхронізація тексту при зміні task
+    setSelected(task.completed); // Синхронізація статусу чекбоксу
+  }, [task]);
 
   const handleDoubleClick = () => {
     setIsEditing(true);
@@ -31,54 +33,91 @@ export const TaskItem: React.FC<ITaskItemProps> = ({
   };
 
   const handleBlur = () => {
+    if (labelText.trim() !== task.text) {
+      const updatedTask = { ...task, text: labelText.trim() }; // Оновлення тексту задачі
+      onChange(updatedTask); // Відправка змін в батьківський компонент
+    }
     setIsEditing(false);
-    const updatedTask = task.updateText(labelText);
-    onChange(updatedTask);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleBlur();
+    }
   };
 
   const handleRadioChange = () => {
     const updatedTask = { ...task, completed: !task.completed };
     setSelected(!selected);
-    onChange(updatedTask);
+    onChange(updatedTask); // Оновлення статусу завершення задачі в глобальному стані
   };
 
   const handleDelete = () => {
-    onDelete(task.id);
+    onDelete(task.id); // Видалення задачі
   };
 
   const renderContent = () => {
     if (isEditing) {
       return (
-        <Input
-          type="text"
-          value={labelText}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          autoFocus
-          name="editableLabel"
-          id=""
-          errorMessage={undefined}
-          placeholder=""
-        />
+        <Box sx={{ width: "100%" }}>
+          <TextField
+            value={labelText}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            onKeyDown={handleKeyDown}
+            autoFocus
+            placeholder="What should be done?"
+            variant="standard"
+            fullWidth
+            InputProps={{
+              style: {
+                fontSize: "16px",
+                padding: "5px 0",
+              },
+            }}
+            InputLabelProps={{
+              style: {
+                color: "#9e9e9e",
+              },
+            }}
+          />
+        </Box>
       );
     }
     return (
       <>
-        <CheckBox
-          type="radio"
-          name={`task-${task.id}`}
-          value={task.completed ? "1" : ""}
-          checked={selected}
-          onChange={handleRadioChange}
-          label=""
-        />
-        <span onDoubleClick={handleDoubleClick}>
-          {task.text || "Double-click to edit"}
-        </span>
-        <CustomButton onClick={handleDelete}>Удалить</CustomButton>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <CheckBox
+            type="radio"
+            name={`task-${task.id}`}
+            value={task.completed ? "1" : ""}
+            checked={selected}
+            onChange={handleRadioChange}
+            label=""
+          />
+          <Typography
+            onDoubleClick={handleDoubleClick}
+            style={{ cursor: "pointer", fontSize: "inherit" }}
+          >
+            {task.text || "Double-click to edit"}
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            paddingLeft: "25px",
+          }}
+        >
+          <CustomButton onClick={handleDelete}>Delete</CustomButton>
+        </Box>
       </>
     );
   };
 
-  return <div>{renderContent()}</div>;
+  return <div className={style.task_item}>{renderContent()}</div>;
 };
