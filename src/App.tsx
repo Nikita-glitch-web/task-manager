@@ -9,8 +9,8 @@ import {
   Navigate,
 } from "react-router-dom";
 import TaskPage from "./pages/Task";
-import { AuthPage } from "./pages/Auth";
 import { AuthProvider, useAuthContext } from "./contexts/AuthContext";
+import { ThemeContextProvider } from "./theme/ThemeContext";
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -18,7 +18,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
   const { user } = useAuthContext();
 
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/tasks" replace />;
   }
 
   return <>{children}</>;
@@ -27,21 +27,22 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
 const App: React.FC = () => {
   return (
     <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<AuthPage />} />
-          <Route
-            path="/tasks"
-            element={
-              <ProtectedRoute>
-                <TaskPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/login" element={<LoginForm />} />
-          <Route path="/signup" element={<SignUpForm />} />
-        </Routes>
-      </Router>
+      <ThemeContextProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<LoginForm />} />
+            <Route
+              path="/tasks"
+              element={
+                <ProtectedRoute>
+                  <TaskPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/signup" element={<SignUpForm />} />
+          </Routes>
+        </Router>
+      </ThemeContextProvider>
     </AuthProvider>
   );
 };

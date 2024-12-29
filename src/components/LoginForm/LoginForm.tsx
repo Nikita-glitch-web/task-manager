@@ -1,11 +1,11 @@
 import React, { useState, useCallback } from "react";
-import { TextField, Box } from "@mui/material";
-import { IAuthCredentials } from "../../types/types";
-import { CustomButton } from "../Button/Button";
+import { TextField, Box, Typography } from "@mui/material";
+import { CustomButton } from "../../theme/theme"; // Імпортуємо з theme.ts
 import { useAuthStore } from "../../store/useAuthStore";
 import { useNavigate } from "react-router-dom";
+
 export const LoginForm: React.FC = () => {
-  const navigate = useNavigate(); // Get the navigate function
+  const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
@@ -23,10 +23,8 @@ export const LoginForm: React.FC = () => {
 
       setError(null);
 
-      const credentials: IAuthCredentials = { email, password };
-
       try {
-        await login(credentials);
+        await login({ email, password });
         navigate("/tasks");
         console.log("User logged in successfully");
       } catch (err) {
@@ -34,47 +32,67 @@ export const LoginForm: React.FC = () => {
         console.error("Login error:", err);
       }
     },
-    [email, password, login]
+    [email, password, login, navigate]
   );
+
+  const handleSignupRedirect = () => {
+    navigate("/signup"); // Редирект на страницу регистрации
+  };
 
   return (
     <Box
-      component="form"
-      onSubmit={handleSubmit}
       sx={{
-        width: "100%",
-        maxWidth: 400,
-        margin: "auto",
-        padding: 2,
+        height: "100vh",
         display: "flex",
-        flexDirection: "column",
-        gap: 2,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#f5f5f5",
+        position: "relative",
       }}
     >
-      <TextField
-        label="Email"
-        type="email"
-        variant="outlined"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        fullWidth
-        error={!!error && !email}
-        helperText={!email && error}
-      />
-      <TextField
-        label="Password"
-        type="password"
-        variant="outlined"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        fullWidth
-        error={!!error && !password}
-        helperText={!password && error}
-      />
-      {error && !(!email || !password) && (
-        <Box sx={{ color: "red", textAlign: "center" }}>{error}</Box>
-      )}
-      <CustomButton type="submit">Login</CustomButton>
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{
+          width: 400,
+          padding: 4,
+          backgroundColor: "#fff",
+          borderRadius: 2,
+          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+        }}
+      >
+        <Typography variant="h1">My tasks</Typography>
+        <TextField
+          label="Email"
+          type="email"
+          variant="outlined"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          fullWidth
+          error={!!error && !email}
+          helperText={!email && error}
+        />
+        <TextField
+          label="Password"
+          type="password"
+          variant="outlined"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          fullWidth
+          error={!!error && !password}
+          helperText={!password && error}
+        />
+        {error && <Box sx={{ color: "red", textAlign: "center" }}>{error}</Box>}
+        <CustomButton type="submit">
+          <Typography variant="body1">Login</Typography>
+        </CustomButton>
+        <CustomButton onClick={handleSignupRedirect}>
+          <Typography variant="body1">Signup</Typography>
+        </CustomButton>
+      </Box>
     </Box>
   );
 };
