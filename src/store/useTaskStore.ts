@@ -80,7 +80,7 @@ export const useTaskStore = create<TaskStore>((set) => ({
   updateTask: async (updatedTask: ITask) => {
     try {
       await updateTaskService(updatedTask.id, {
-        title: updatedTask.text,
+        text: updatedTask.text,
         completed: updatedTask.completed,
       });
       set((state) => ({

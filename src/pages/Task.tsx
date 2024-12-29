@@ -2,23 +2,38 @@ import React from "react";
 import { TaskForm } from "../components/TaskForm";
 import { TaskList } from "../components/TaskList";
 import ThemeSwitcher from "../components/ThemeToggle/ThemeToggle";
-import { ThemeContextProvider } from "../theme/ThemeContext";
+import { Box } from "@mui/material";
+import style from "./Task.module.scss";
 
 const TaskPage: React.FC = () => {
   return (
     <div className="page-wrapper">
-      <ThemeContextProvider>
-        <div>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <Box
+          sx={{
+            background: "#FBBC04",
+            height: "80px",
+            width: "100",
+            display: "flex",
+            justifyContent: "end",
+            marginBottom: "20px",
+          }}
+        >
           <ThemeSwitcher />
-          <main>
-            <TaskForm />
-            <TaskList />
-          </main>
-          <footer className="app-footer">
-            <p>© 2024 Task App. All rights reserved.</p>
-          </footer>
-        </div>
-      </ThemeContextProvider>
+        </Box>
+        <main>
+          <TaskForm />
+          <TaskList />
+        </main>
+        <footer className={style.app_footer}>
+          <p>© 2024 Task App. All rights reserved.</p>
+        </footer>
+      </Box>
     </div>
   );
 };

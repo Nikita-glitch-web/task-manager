@@ -1,32 +1,38 @@
 import { FC } from "react";
 import { Button as MUIButton } from "@mui/material";
-import { Link } from "react-router-dom"; // Імпортуємо Link для внутрішніх посилань
+import { Link } from "react-router-dom";
+import "../../styles/variables.scss";
 
 interface ButtonProps {
   onClick?: () => void;
-  children: string;
-  type?: "button" | "submit" | "reset"; // Тип кнопки
-  href?: string; // Для зовнішнього посилання
-  to?: string; // Для внутрішнього посилання (React Router)
+  children: React.ReactNode; // Дозволяє використовувати будь-який контент, включаючи строки, елементи і масиви
+  type?: "button" | "submit" | "reset";
+  href?: string;
+  to?: string;
+  color?: "primary" | "secondary";
+  variant?: "contained" | "outlined";
 }
 
 export const CustomButton: FC<ButtonProps> = ({
   onClick,
   children,
   type = "button",
-  href, // Посилання для зовнішніх сайтів
-  to, // Шлях для внутрішньої навігації
+  href,
+  to,
+  color = "primary",
+  variant = "contained",
 }) => {
-  // Якщо передано href, то це зовнішнє посилання
   if (href) {
     return (
       <MUIButton
-        variant="contained"
+        variant={variant}
+        color={color}
         onClick={onClick}
         type={type}
         component="a"
         href={href}
         target="_blank"
+        rel="noopener noreferrer"
       >
         {children}
       </MUIButton>
@@ -36,7 +42,8 @@ export const CustomButton: FC<ButtonProps> = ({
   if (to) {
     return (
       <MUIButton
-        variant="contained"
+        color={color}
+        variant={variant}
         onClick={onClick}
         type={type}
         component={Link}
@@ -48,7 +55,7 @@ export const CustomButton: FC<ButtonProps> = ({
   }
 
   return (
-    <MUIButton variant="contained" onClick={onClick} type={type}>
+    <MUIButton color={color} variant={variant} onClick={onClick} type={type}>
       {children}
     </MUIButton>
   );
